@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>栃尾高校 - 教室紹介</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap");
+
+      body {
+        font-family: "M PLUS Rounded 1c", "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f9ff;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23bae6fd' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      header {
+        background-color: #4ade80;
+        color: #003366;
+        padding: 2rem;
+        text-align: center;
+        border-bottom: 8px solid #0ea5e9;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header-deco {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        z-index: 0;
+      }
+
+      .header-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 0 #fff;
+      }
+
+      .mascot {
+        position: absolute;
+        bottom: -20px;
+        right: 50px;
+        width: 120px;
+        height: 120px;
+        z-index: 2;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-weight: 700;
+        color: #0c4a6e;
+      }
+
+      .intro {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 3px dashed #38bdf8;
+        position: relative;
+      }
+
+      .intro-deco {
+        position: absolute;
+        top: -25px;
+        left: 20px;
+      }
+
+      .classroom-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .section-title:after {
+        content: "";
+        display: block;
+        width: 150px;
+        height: 5px;
+        background: linear-gradient(to right, #4ade80, #0ea5e9);
+        margin: 10px auto 0;
+        border-radius: 10px;
+      }
+
+      .classroom-card {
+        background-color: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 2px solid #e0f2fe;
+      }
+
+      .classroom-card:hover {
+        transform: translateY(-10px) rotate(1deg);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .classroom-image-container {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+      }
+
+      .classroom-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+      }
+
+      .classroom-card:hover .classroom-image {
+        transform: scale(1.05);
+      }
+
+      .classroom-icon {
+        position: absolute;
+        bottom: -25px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background-color: #0ea5e9;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .classroom-icon svg {
+        width: 30px;
+        height: 30px;
+        fill: white;
+      }
+
+      .classroom-info {
+        padding: 1.5rem;
+        padding-top: 2rem;
+      }
+
+      .classroom-title {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: #0c4a6e;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .classroom-title::before {
+        content: "★";
+        margin-right: 8px;
+        color: #f59e0b;
+      }
+
+      .matterport-section {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 3px solid #38bdf8;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .matterport-container {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%; /* 16:9 アスペクト比 */
+        overflow: hidden;
+        margin-top: 1.5rem;
+        border-radius: 15px;
+        border: 5px solid #e0f2fe;
+      }
+
+      .matterport-iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .matterport-deco {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        width: 100px;
+        height: 100px;
+        transform: rotate(15deg);
+      }
+
+      footer {
+        background-color: #4ade80;
+        color: #003366;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+        border-top: 8px solid #0ea5e9;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .footer-wave {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
+
+      .footer-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .button {
+        display: inline-block;
+        background-color: #0ea5e9;
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
+        border: 2px solid white;
+      }
+
+      .button:hover {
+        background-color: #0284c7;
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(14, 165, 233, 0.5);
+      }
+
+      .button-container {
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      .fun-fact {
+        background-color: #fef3c7;
+        border-radius: 15px;
+        padding: 1rem;
+        margin-top: 1rem;
+        border-left: 5px solid #f59e0b;
+        display: flex;
+        align-items: center;
+      }
+
+      .fun-fact svg {
+        flex-shrink: 0;
+        width: 25px;
+        height: 25px;
+        margin-right: 10px;
+        fill: #d97706;
+      }
+
+      /* タブ切り替え用のスタイル */
+      .tab-container {
+        margin-top: 2rem;
+      }
+
+      .tab-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .tab-button {
+        background-color: #e0f2fe;
+        border: 2px solid #38bdf8;
+        border-radius: 50px;
+        padding: 8px 20px;
+        font-weight: bold;
+        color: #0c4a6e;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+        font-size: 0.95rem;
+      }
+
+      .tab-button.active {
+        background-color: #0ea5e9;
+        color: white;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
+        transform: translateY(-3px);
+      }
+
+      .tab-button:hover:not(.active) {
+        background-color: #bae6fd;
+        transform: translateY(-2px);
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .room-details {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background-color: #f0f9ff;
+        border-radius: 15px;
+        border: 2px dashed #38bdf8;
+      }
+
+      .btn-3d {
+        display: inline-block;
+        background-color: #f97316;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 6px 0 #c2410c;
+        transition: all 0.1s;
+        margin: 2rem 0 1rem;
+        position: relative;
+        top: 0;
+      }
+
+      .btn-3d:hover {
+        box-shadow: 0 4px 0 #c2410c;
+        top: 2px;
+      }
+
+      .btn-3d:active {
+        box-shadow: 0 0 0 #c2410c;
+        top: 6px;
+      }
+
+      .guide-character {
+        position: absolute;
+        bottom: -10px;
+        left: 20px;
+        width: 100px;
+        height: 100px;
+        z-index: 2;
+      }
+
+      /* HPリンクボタン */
+      .hp-link-button {
+        display: inline-block;
+        background-color: #8b5cf6;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s;
+        box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4);
+        border: 2px solid white;
+        margin: 1rem 0.5rem;
+      }
+
+      .hp-link-button:hover {
+        background-color: #7c3aed;
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(139, 92, 246, 0.5);
+      }
+
+      /* スマホ対応 */
+      @media (max-width: 768px) {
+        .classroom-section {
+          grid-template-columns: 1fr;
+        }
+
+        header h1 {
+          font-size: 2rem;
+        }
+
+        .mascot {
+          width: 80px;
+          height: 80px;
+          right: 20px;
+        }
+
+        .tab-button {
+          font-size: 0.85rem;
+          padding: 6px 12px;
+        }
+
+        .guide-character {
+          width: 70px;
+          height: 70px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <h1>✨ 栃尾高校 バーチャル教室紹介 ✨</h1>
+        <p>新入生のみなさん、ようこそ！</p>
+      </div>
+      <svg
+        class="header-deco"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+      >
+        <path
+          fill="#ffffff"
+          fill-opacity="0.3"
+          d="M0,224L48,213.3C96,203,192,181,288,170.7C384,160,480,160,576,181.3C672,203,768,245,864,261.3C960,277,1056,267,1152,234.7C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+        ></path>
+      </svg>
+      <img src="https://cdn.glitch.global/48547ad6-d005-4bd2-9321-43350b8dde32/1.png?v=1744174728610" alt="案内キャラクター" class="guide-character" />
+
+    </header>
+
+    <div class="container">
+      <section class="intro">
+        <div class="intro-deco">
+          <svg width="50" height="50" viewBox="0 0 24 24" fill="#4ade80">
+            <path
+              d="M20 12.35V10h-6V4h-4v6H4v2.35c-.63.36-1 .98-1 1.65s.37 1.29 1 1.65V20h16v-4.35c.63-.36 1-.98 1-1.65s-.37-1.29-1-1.65zM8 6h2v2H8V6zm0 12H6v-2h2v2zm0-6H6v-2h2v2zm4 6h-2v-2h2v2zm0-6h-2v-2h2v2zm0-6h-2V4h2v2zm4 12h-2v-2h2v2zm2-6h-6v-2h6v2z"
+            />
+          </svg>
+        </div>
+        <h2>栃尾高校へようこそ！</h2>
+        <p>
+          こんにちは！栃尾高校の教室や施設を楽しくバーチャル見学できるページへようこそ
+          🎉
+        </p>
+        <p>
+          入学前に学校の様子をチェックして、新生活をワクワクしながら迎えましょう！
+        </p>
+        <p>
+          このページでは、実際の教室を3D映像で見ることができちゃいます！まるで学校にいるみたいな体験をしてくださいね
+          😊
+        </p>
+
+        <div class="fun-fact">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path
+              d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
+            />
+          </svg>
+          <span
+            >栃尾高校のキャンパスには、<strong>秘密の場所</strong>がいくつか隠れているかも...？バーチャルツアーで探してみてね！</span
+          >
+        </div>
+      </section>
+
+      <section class="matterport-section">
+        <svg
+          class="matterport-deco"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 576 512"
+        >
+          <path
+            fill="#0ea5e9"
+            d="M284.046,48.465C302.281,32.723,328.662,16.98,369.582,16.98c65.225,0,118.2,48.142,118.2,107.478c0,30.237-10.408,54.369-39.548,101.874c-22.184,36.343-96.957,112.844-98.179,197.977c-0.139,5.132-4.396,9.176-9.539,9.176h-41.246c-5.592,0-9.979-4.719-9.538-10.289c0.864-11.356,3.808-52.104,35.75-101.312c12.088-18.674,20.534-32.347,27.061-44.74c7.536-14.265,11.34-24.796,11.34-36.919c0-40.153-32.375-69.965-73.562-69.965c-32.374,0-57.944,19.167-68.162,51.014c-1.229,4.428-5.273,7.474-9.83,7.474h-44.946c-5.549,0-9.935-4.576-9.506-10.098c7.311-91.719,82.708-151.7,169.044-151.7C355.537,67.949,318.363,83.692,284.046,48.465z M226.756,445.241c0-16.897,13.687-30.576,30.583-30.576c16.915,0,30.602,13.678,30.602,30.576c0,16.877-13.687,30.573-30.602,30.573C240.443,475.814,226.756,462.118,226.756,445.241z"
+            style="transform: rotate(15deg)"
+          ></path>
+        </svg>
+        <img src="https://cdn.glitch.global/48547ad6-d005-4bd2-9321-43350b8dde32/2.png?v=1744174731829" alt="案内キャラクター" class="guide-character" />
+
+        <h2 class="section-title">🏫 3Dバーチャルツアー 🏫</h2>
+        <p>
+          スマホやパソコンから学校内を自由に探検しよう！矢印をクリックして移動したり、ドラッグして見回したりできるよ！
+        </p>
+
+        <div class="tab-container">
+          <div class="tab-buttons">
+            <div class="tab-button active" data-tab="classroom">一般教室</div>
+            <div class="tab-button" data-tab="workshop">工業実習室</div>
+            <div class="tab-button" data-tab="computer">パソコン室</div>
+            <div class="tab-button" data-tab="welfare">福祉実習室</div>
+            <div class="tab-button" data-tab="library">図書館</div>
+          </div>
+
+          <div class="tab-content active" id="classroom">
+            <div class="matterport-container">
+              <iframe
+                class="matterport-iframe"
+                src="https://my.matterport.com/show/?m=dRUNSBnCGn6"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="room-details">
+              <h3>🎒 一般教室の見どころ 🎒</h3>
+              <p>
+                みんなが毎日過ごす明るい教室だよ！窓からは校庭が見えるんだ。授業や友達との楽しい時間を過ごす大切な場所だよ♪
+              </p>
+              <div class="fun-fact">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path
+                    d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
+                  />
+                </svg>
+                <span
+                  >教室の中をよく見ると、先輩たちの作った掲示物や記念品が飾られているよ！探してみてね！</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="workshop">
+            <div class="matterport-container">
+              <iframe
+                class="matterport-iframe"
+                src="https://my.matterport.com/show/?m=41kCQ5JVd3P"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="room-details">
+              <h3>🔧 工業実習室の見どころ 🔧</h3>
+              <p>
+                専門的な技術を学べる特別な教室だよ！本格的な工具や機械がたくさんあって、将来役立つ技術を身につけられるんだ！
+              </p>
+              <div class="fun-fact">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path
+                    d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
+                  />
+                </svg>
+                <span
+                  >先輩たちが作った作品もあるよ！どんな素敵なものがあるか探してみてね！</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="computer">
+            <div class="matterport-container">
+              <iframe
+                class="matterport-iframe"
+                src="https://my.matterport.com/show/?m=9g9sJdfvSbS"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="room-details">
+              <h3>💻 パソコン室の見どころ 💻</h3>
+              <p>
+                最新のパソコンでプログラミングや情報処理の勉強ができるよ！インターネットを使った調べ学習もここでできるんだ！
+              </p>
+              <div class="fun-fact">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path
+                    d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
+                  />
+                </svg>
+                <span
+                  >プログラミング部のメンバーは、自分たちで作ったゲームで遊ぶこともあるんだって！</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="welfare">
+            <div class="matterport-container">
+              <iframe
+                class="matterport-iframe"
+                src="https://my.matterport.com/show/?m=hTd51kwFFBb"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="room-details">
+              <h3>🤝 福祉実習室の見どころ 🤝</h3>
+              <p>
+                介護や福祉について学べる特別な教室だよ！実際のケアの方法や支援の技術を、体験しながら学ぶことができるんだ！
+              </p>
+              <div class="fun-fact">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path
+                    d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
+                  />
+                </svg>
+                <span
+                  >福祉実習室では、地域のお年寄りとの交流イベントも開催されるんだって！</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="library">
+            <div class="matterport-container">
+              <iframe
+                class="matterport-iframe"
+                src="https://my.matterport.com/show/?m=6sMg67VtrE8"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="room-details">
+              <h3>📚 図書館の見どころ 📚</h3>
+              <p>
+                たくさんの本が並ぶ静かな空間だよ！小説から参考書まで、いろんなジャンルの本があって、読書や勉強に最適なんだ！
+              </p>
+              <div class="fun-fact">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path
+                    d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
+                  />
+                </svg>
+                <span
+                  >昼休みは人気の場所！早めに行かないと、お気に入りの席が取れないかも...？</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-container">
+         <a href="http://www.tochio-h.nein.ed.jp/" target="_blank" class="hp-link-button">
+    栃尾高校のホームページに行く
+  </a>
+        </div>
+      </section>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
