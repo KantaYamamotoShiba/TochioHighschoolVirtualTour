@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>栃尾高校 - バーチャル教室探検クエスト</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap");
+
+      body {
+        font-family: "M PLUS Rounded 1c", "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f9ff;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23bae6fd' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      header {
+        background-color: #4ade80;
+        color: #003366;
+        padding: 2rem;
+        text-align: center;
+        border-bottom: 8px solid #0ea5e9;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header-deco {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        z-index: 0;
+      }
+
+      .header-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 0 #fff;
+      }
+
+      .mascot {
+        position: absolute;
+        bottom: -20px;
+        right: 50px;
+        width: 120px;
+        height: 120px;
+        z-index: 2;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      h1, h2, h3 {
+        font-weight: 700;
+        color: #0c4a6e;
+      }
+
+      .intro {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 3px dashed #38bdf8;
+        position: relative;
+      }
+
+      .intro-deco {
+        position: absolute;
+        top: -25px;
+        left: 20px;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .section-title:after {
+        content: "";
+        display: block;
+        width: 150px;
+        height: 5px;
+        background: linear-gradient(to right, #4ade80, #0ea5e9);
+        margin: 10px auto 0;
+        border-radius: 10px;
+      }
+
+      /* クエスト関連スタイル */
+      .quest-board {
+        background-color: #fffbeb;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 3px solid #f59e0b;
+        position: relative;
+      }
+
+      .quest-title {
+        color: #92400e;
+        font-size: 1.4rem;
+        border-bottom: 2px dashed #f59e0b;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .quest-title::before {
+        content: "★";
+        margin-right: 8px;
+        color: #f59e0b;
+      }
+
+      .quest-objective {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 0.75rem;
+      }
+
+      .quest-checkbox {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #f59e0b;
+        border-radius: 4px;
+        margin-right: 10px;
+        flex-shrink: 0;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .quest-checkbox.completed {
+        background-color: #f59e0b;
+      }
+
+      .quest-checkbox.completed::after {
+        content: "✓";
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: bold;
+      }
+
+      .objective-text {
+        flex-grow: 1;
+      }
+
+      .quest-objective.completed .objective-text {
+        text-decoration: line-through;
+        opacity: 0.6;
+      }
+
+      .quest-progress {
+        background-color: #e0f2fe;
+        border-radius: 10px;
+        height: 10px;
+        margin: 1rem 0;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-color: #0ea5e9;
+        width: 0%;
+        transition: width 0.5s ease;
+      }
+
+      .progress-text {
+        text-align: right;
+        font-size: 0.9rem;
+        color: #0c4a6e;
+      }
+
+      .quest-reward {
+        background-color: #f0fdfa;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-top: 1rem;
+        border-left: 4px solid #10b981;
+      }
+
+      .reward-title {
+        color: #10b981;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .reward-title::before {
+        content: "✦";
+        margin-right: 5px;
+      }
+
+      /* マターポート関連スタイル */
+      .matterport-section {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 3px solid #38bdf8;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .matterport-container {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+        margin-top: 1.5rem;
+        border-radius: 15px;
+        border: 5px solid #e0f2fe;
+      }
+
+      .matterport-iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .tab-container {
+        margin-top: 2rem;
+      }
+
+      .tab-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .tab-button {
+        background-color: #e0f2fe;
+        border: 2px solid #38bdf8;
+        border-radius: 50px;
+        padding: 8px 20px;
+        font-weight: bold;
+        color: #0c4a6e;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+        font-size: 0.95rem;
+      }
+
+      .tab-button.active {
+        background-color: #0ea5e9;
+        color: white;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
+        transform: translateY(-3px);
+      }
+
+      .tab-button:hover:not(.active) {
+        background-color: #bae6fd;
+        transform: translateY(-2px);
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .room-details {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background-color: #f0f9ff;
+        border-radius: 15px;
+        border: 2px dashed #38bdf8;
+      }
+
+      .hint-box {
+        background-color: #e0f2fe;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-top: 1rem;
+        border-left: 4px solid #0ea5e9;
+        display: flex;
+        align-items: center;
+      }
+
+      .hint-icon {
+        font-size: 1.5rem;
+        margin-right: 10px;
+        color: #0ea5e9;
+      }
+
+      .hint-text {
+        flex-grow: 1;
+      }
+
+      /* インタラクティブ要素 */
+      .button {
+        display: inline-block;
+        background-color: #0ea5e9;
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
+        border: 2px solid white;
+      }
+
+      .button:hover {
+        background-color: #0284c7;
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(14, 165, 233, 0.5);
+      }
+
+      .button-container {
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      .quest-button {
+        display: inline-block;
+        background-color: #f97316;
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s;
+        box-shadow: 0 4px 10px rgba(249, 115, 22, 0.4);
+        border: 2px solid white;
+        cursor: pointer;
+      }
+
+      .quest-button:hover {
+        background-color: #ea580c;
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(249, 115, 22, 0.5);
+      }
+
+      /* アイテム収集ボックス */
+      .collection-box {
+        background-color: #f8fafc;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 3px solid #6366f1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .collection-title {
+        color: #4338ca;
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+
+      .items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 1rem;
+      }
+
+      .item-slot {
+        background-color: #eff6ff;
+        border: 2px dashed #6366f1;
+        border-radius: 10px;
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+        transition: all 0.3s;
+      }
+
+      .item-slot.found {
+        border: 2px solid #4338ca;
+        background-color: #e0e7ff;
+      }
+
+      .item-icon {
+        font-size: 2rem;
+        color: #6366f1;
+        margin-bottom: 0.25rem;
+      }
+
+      .item-name {
+        font-size: 0.8rem;
+        text-align: center;
+      }
+
+      .item-slot.locked {
+        opacity: 0.5;
+      }
+
+      .item-slot.locked::after {
+        content: "🔒";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.5rem;
+      }
+
+      /* 通知スタイル */
+      .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #4ade80;
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s;
+        transform: translateX(120%);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        max-width: 300px;
+      }
+
+      .notification.show {
+        transform: translateX(0);
+      }
+
+      .notification-icon {
+        font-size: 1.5rem;
+      }
+
+      /* スマホ対応 */
+      @media (max-width: 768px) {
+        header h1 {
+          font-size: 2rem;
+        }
+
+        .tab-button {
+          font-size: 0.85rem;
+          padding: 6px 12px;
+        }
+
+        .items-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      footer {
+        background-color: #4ade80;
+        color: #003366;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+        border-top: 8px solid #0ea5e9;
+        position: relative;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <h1>✨ 栃尾高校 バーチャル教室探検クエスト ✨</h1>
+        <p>新入生のみなさん、冒険の始まりです！</p>
+      </div>
+      <svg
+        class="header-deco"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+      >
+        <path
+          fill="#ffffff"
+          fill-opacity="0.3"
+          d="M0,224L48,213.3C96,203,192,181,288,170.7C384,160,480,160,576,181.3C672,203,768,245,864,261.3C960,277,1056,267,1152,234.7C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+        ></path>
+      </svg>
+      <img src="/api/placeholder/120/120" alt="案内キャラクター" class="mascot" />
+    </header>
+
+    <div class="container">
+      <section class="intro">
+        <div class="intro-deco">
+          <svg width="50" height="50" viewBox="0 0 24 24" fill="#4ade80">
+            <path
+              d="M20 12.35V10h-6V4h-4v6H4v2.35c-.63.36-1 .98-1 1.65s.37 1.29 1 1.65V20h16v-4.35c.63-.36 1-.98 1-1.65s-.37-1.29-1-1.65zM8 6h2v2H8V6zm0 12H6v-2h2v2zm0-6H6v-2h2v2zm4 6h-2v-2h2v2zm0-6h-2v-2h2v2zm0-6h-2V4h2v2zm4 12h-2v-2h2v2zm2-6h-6v-2h6v2z"
+            />
+          </svg>
+        </div>
+        <h2>栃尾高校の探検を始めよう！</h2>
+        <p>
+          こんにちは、未来の栃尾高校生！このページでは学校の様々な教室や施設を探検しながら、
+          隠された秘密を解き明かすクエストに挑戦できます 🎯
+        </p>
+        <p>
+          3Dバーチャルツアーを使って学校内を探検し、クエストをクリアしていきましょう！
+          新しい発見と冒険があなたを待っています！
+        </p>
+
+        <!-- メインクエスト情報 -->
+        <div class="quest-board">
+          <h3 class="quest-title">メインクエスト：栃尾高校の秘宝を探せ！</h3>
+          <p>校内に隠された5つの宝物を見つけて、栃尾高校の秘密を解き明かそう！</p>
+          
+          <div class="quest-objectives">
+            <div class="quest-objective" data-target="classroom">
+              <div class="quest-checkbox"></div>
+              <div class="objective-text">一般教室で隠された「知恵の本」を見つける</div>
+            </div>
+            <div class="quest-objective" data-target="workshop">
+              <div class="quest-checkbox"></div>
+              <div class="objective-text">工業実習室で「匠の道具」を発見する</div>
+            </div>
+            <div class="quest-objective" data-target="computer">
+              <div class="quest-checkbox"></div>
+              <div class="objective-text">パソコン室で「デジタルの鍵」を入手する</div>
+            </div>
+            <div class="quest-objective" data-target="welfare">
+              <div class="quest-checkbox"></div>
+              <div class="objective-text">福祉実習室で「癒しのクリスタル」を探す</div>
+            </div>
+            <div class="quest-objective" data-target="library">
+              <div class="quest-checkbox"></div>
+              <div class="objective-text">図書館で「伝説の校章」を見つける</div>
+            </div>
+          </div>
+          
+          <div class="quest-progress">
+            <div class="progress-bar" style="width: 0%"></div>
+          </div>
+          <div class="progress-text">進捗：0/5 完了</div>
+          
+          <div class="quest-reward">
+            <div class="reward-title">クエスト報酬</div>
+            <p>すべてのアイテムを集めると、栃尾高校の特別な秘密が明かされます！</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="matterport-section">
+        <h2 class="section-title">🏫 3Dバーチャル探検クエスト 🏫</h2>
+        <p>
+          各教室を探検して、隠されたアイテムを見つけよう！
+          ヒントを参考に、矢印をクリックして移動したり、ドラッグして見回したりして探してみよう！
+        </p>
+
+        <div class="tab-container">
+          <div class="tab-buttons">
+            <div class="tab-button active" data-tab="classroom">一般教室</div>
+            <div class="tab-button" data-tab="workshop">工業実習室</div>
+            <div class="tab-button" data-tab="computer">パソコン室</div>
+            <div class="tab-button" data-tab="welfare">福祉実習室</div>
+            <div class="tab-button" data-tab="library">図書館</div>
+          </div>
+
+          <div class="tab-content active" id="classroom">
+            <div class="matterport-container">
+              <iframe
+                class="matterport-iframe"
+                src="https://my.matterport.com/show/?m=dRUNSBnCGn6"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="room-details">
+              <h3>🎒 一般教室のクエスト 🎒</h3>
+              <p>
+                みんなが毎日過ごす明るい教室だよ！この教室のどこかに「知恵の本」が隠されているよ。
+                見つけることができるかな？
+              </p>
+              <div class="hint-box">
+                <div class="hint-icon">💡</div>
+                <div class="hint-text">
+                  <strong>ヒント：</strong>教室の後ろ側、授業で使う大切なものが置かれている場所を探してみよう！
+                </div>
+              </div>
+              <div class="button-container">
+                <button class="quest-button" data-room="classroom">
+                  アイテムを見つけた！
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="workshop">
+            <div class="matterport-container">
+              <iframe
+                class="matterport-iframe"
+                src="https://my.matterport.com/show/?m=41kCQ5JVd3P"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="room-details">
+              <h3>🔧 工業実習室のクエスト 🔧</h3>
+              <p>
+                専門的な技術を学べる特別な教室だよ！この教室には「匠の道具」が隠されているよ。
+                見つけられるかな？
+              </p>
+              <div class="hint-box">
+                <div class="hint-icon">💡</div>
+                <div class="hint-text">
+                  <strong>ヒント：</strong>作業台の近くで、金属が光っている場所を探してみよう！
+                </div>
+              </div>
+              <div class="button-container">
+                <button class="quest-button" data-room="workshop">
+                  アイテムを見つけた！
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="computer">
+            <div class="matterport-container">
+              <iframe
+                class="matterport-iframe"
+                src="https://my.matterport.com/show/?m=9g9sJdfvSbS"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="room-details">
+              <h3>💻 パソコン室のクエスト 💻</h3>
+              <p>
+                最新のパソコンでプログラミングや情報処理の勉強ができるよ！この教室には「デジタルの鍵」が隠されているよ。
+                どこにあるかな？
+              </p>
+              <div class="hint-box">
+                <div class="hint-icon">💡</div>
+                <div class="hint-text">
+                  <strong>ヒント：</strong>先生の席の近くで、青く光るものを探してみよう！
+                </div>
+              </div>
+              <div class="button-container">
+                <button class="quest-button" data-room="computer">
+                  アイテムを見つけた！
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="welfare">
+            <div class="matterport-container">
+              <iframe
+                class="matterport-iframe"
+                src="https://my.matterport.com/show/?m=hTd51kwFFBb"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="room-details">
+              <h3>🤝 福祉実習室のクエスト 🤝</h3>
+              <p>
+                介護や福祉について学べる特別な教室だよ！この教室のどこかに「癒しのクリスタル」が隠されているよ。
+                見つけることができるかな？
+              </p>
+              <div class="hint-box">
+                <div class="hint-icon">💡</div>
+                <div class="hint-text">
+                  <strong>ヒント：</strong>実習用のベッドの近くに、輝くものがあるはず！
+                </div>
+              </div>
+              <div class="button-container">
+                <button class="quest-button" data-room="welfare">
+                  アイテムを見つけた！
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" id="library">
+            <div class="matterport-container">
+              <iframe
+                class="matterport-iframe"
+                src="https://my.matterport.com/show/?m=6sMg67VtrE8"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="room-details">
+              <h3>📚 図書館のクエスト 📚</h3>
+              <p>
+                たくさんの本が並ぶ静かな空間だよ！この図書館のどこかに「伝説の校章」が隠されているよ。
+                見つけられるかな？
+              </p>
+              <div class="hint-box">
+                <div class="hint-icon">💡</div>
+                <div class="hint-text">
+                  <strong>ヒント：</strong>歴史に関する本が置いてある棚を探してみよう！校章が光っているはず！
+                </div>
+              </div>
+              <div class="button-container">
+                <button class="quest-button" data-room="library">
+                  アイテムを見つけた！
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- アイテム収集ボックス -->
+      <section class="collection-box">
+        <h3 class="collection-title">🎒 収集したアイテム 🎒</h3>
+        <div class="items-grid">
+          <div class="item-slot" id="item-classroom">
+            <div class="item-icon">📕</div>
+            <div class="item-name">知恵の本</div>
+          </div>
+          <div class="item-slot" id="item-workshop">
+            <div class="item-icon">🔨</div>
+            <div class="item-name">匠の道具</div>
+          </div>
+          <div class="item-slot" id="item-computer">
+            <div class="item-icon">🔑</div>
+            <div class="item-name">デジタルの鍵</div>
+          </div>
+          <div class="item-slot" id="item-welfare">
+            <div class="item-icon">💎</div>
+            <div class="item-name">癒しのクリスタル</div>
+          </div>
+          <div class="item-slot" id="item-library">
+            <div class="item-icon">🏅</div>
+            <div class="item-name">伝説の校章</div>
+          </div>
+        </div>
+        
+        <div class="button-container">
+          <a href="http://www.tochio-h.nein.ed.jp/" target="_blank" class="button">
+            栃尾高校のホームページに行く
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <div class="notification" id="notification">
+      <div class="notification-icon">🎉</div>
+      <div>
+        <strong>アイテム発見！</strong>
+        <p>新しいアイテムを見つけました！</p>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2025 栃尾高校 バーチャル教室探検クエスト</p>
+    </footer>
+
+    <script>
+      // タブ切り替え機能
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', () => {
+          // 現在のアクティブタブを非アクティブに
+          document.querySelector('.tab-button.active').classList.remove('active');
+          document.querySelector('.tab-content.active').classList.remove('active');
+          
+          // クリックされたタブをアクティブに
+
+// タブ切り替え機能
+document.querySelectorAll('.tab-button').forEach(button => {
+  button.addEventListener('click', () => {
+    // 現在のアクティブタブを非アクティブに
+    document.querySelector('.tab-button.active').classList.remove('active');
+    document.querySelector('.tab-content.active').classList.remove('active');
+    
+    // クリックされたタブをアクティブに
+    button.classList.add('active');
+    const tabId = button.getAttribute('data-tab');
+    document.getElementById(tabId).classList.add('active');
+  });
+});
+
+// クエスト進行状況管理
+let questProgress = {
+  classroom: false,
+  workshop: false,
+  computer: false,
+  welfare: false,
+  library: false
+};
+
+// ローカルストレージから進行状況を読み込む
+function loadProgress() {
+  const savedProgress = localStorage.getItem('questProgress');
+  if (savedProgress) {
+    questProgress = JSON.parse(savedProgress);
+    updateQuestUI();
+  }
+}
+
+// 進行状況を保存する
+function saveProgress() {
+  localStorage.setItem('questProgress', JSON.stringify(questProgress));
+}
+
+// UI更新関数
+function updateQuestUI() {
+  // クエスト目標のチェックボックス更新
+  for (const room in questProgress) {
+    if (questProgress[room]) {
+      const objective = document.querySelector(`.quest-objective[data-target="${room}"]`);
+      objective.classList.add('completed');
+      objective.querySelector('.quest-checkbox').classList.add('completed');
+      
+      // アイテムスロットを更新
+      document.getElementById(`item-${room}`).classList.add('found');
+    }
+  }
+  
+  // 進捗バーの更新
+  const completedCount = Object.values(questProgress).filter(Boolean).length;
+  const progressBar = document.querySelector('.progress-bar');
+  const progressText = document.querySelector('.progress-text');
+  
+  progressBar.style.width = `${(completedCount / 5) * 100}%`;
+  progressText.textContent = `進捗：${completedCount}/5 完了`;
+  
+  // すべて完了した場合のボーナス処理
+  if (completedCount === 5) {
+    showCompletionBonus();
+  }
+}
+
+// クエスト完了ボーナス表示
+function showCompletionBonus() {
+  const completionBox = document.createElement('div');
+  completionBox.className = 'quest-board';
+  completionBox.style.backgroundColor = '#f0fdfa';
+  completionBox.style.borderColor = '#10b981';
+  completionBox.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.5)';
+  completionBox.innerHTML = `
+    <h3 class="quest-title" style="color: #047857;">🏆 クエスト達成おめでとう！ 🏆</h3>
+    <p>すべてのアイテムを収集し、栃尾高校のすべての秘密を解き明かしました！</p>
+    <p>あなたは真の栃尾高校探検家です。4月の入学式でお会いできるのを楽しみにしています！</p>
+    <div class="button-container">
+      <a href="http://www.tochio-h.nein.ed.jp/course.html" target="_blank" class="button" style="background-color: #10b981;">
+        学科紹介を見る
+      </a>
+    </div>
+  `;
+  
+  // コレクションボックスの後に追加
+  document.querySelector('.collection-box').after(completionBox);
+}
+
+// アイテム発見時の処理
+document.querySelectorAll('.quest-button').forEach(button => {
+  button.addEventListener('click', () => {
+    const room = button.getAttribute('data-room');
+    
+    // まだ見つけていない場合のみ処理
+    if (!questProgress[room]) {
+      questProgress[room] = true;
+      saveProgress();
+      updateQuestUI();
+      showNotification(`「${document.getElementById('item-'+room).querySelector('.item-name').textContent}」を見つけました！`);
+    }
+  });
+});
+
+// 通知表示関数
+function showNotification(message) {
+  const notification = document.getElementById('notification');
+  notification.querySelector('p').textContent = message;
+  notification.classList.add('show');
+  
+  // 5秒後に通知を非表示
+  setTimeout(() => {
+    notification.classList.remove('show');
+  }, 5000);
+}
+
+// ページ読み込み時に進行状況を読み込む
+window.addEventListener('DOMContentLoaded', () => {
+  loadProgress();
+});
